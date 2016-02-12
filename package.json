@@ -1,6 +1,20 @@
 {
-  "name": "socket-chat-example",
-  "version": "0.0.1",
-  "description": "my first socket.io app",
-  "dependencies": {}
+    "name": "socket-chat-example",
+    "version": "0.0.1",
+    "description": "my first socket.io app",
+    "dependencies": {
+        "express": "^4.13.4",
+        "socket.io": "^1.4.5",
+        "body-parser": "^1.13.3",
+        "express-session": "^1.11.3",
+        "errorhandler": "^1.4.2",
+        "composable-middleware": "^0.3.0",
+        "mongoose": "~3.6.13",
+        "bluebird": "^2.9.34",
+        "connect-mongo": "^0.8.1",
+        "serve-favicon": "^2.3.0"
+    },
+    "devDependencies" : {
+        "babel-core": "^5.6.4"
+    }
 }
