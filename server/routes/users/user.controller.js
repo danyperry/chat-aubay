@@ -3,8 +3,10 @@ var lodash = require("lodash");
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
   return function(entity) {
+       
     if (entity) {
-      res.status(statusCode).json(entity);
+         console.log("respondWithResult:"+ entity);
+         res.status(statusCode).json(entity);
       //console.log(entity);
     }
   };
@@ -13,16 +15,21 @@ function respondWithResult(res, statusCode) {
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
+       console.log("handleError:"+ err);  
     res.status(statusCode).send(err);
-  };
+     };
 }
 
 
 
 function handleEntityNotFound(res) {
+    
   return function(entity) {
-    if (!entity) {
+    console.log("handleEntityNotFound:"+ entity.length);   
+    if (entity.length == 0) {
+         console.log("handleEntityNotFound status 404:"+ entity);   
       res.status(404).end();
+      //res.end();
       return null;
     }
 
@@ -79,7 +86,15 @@ module.exports.destroy = function(req, res) {
 
 // Gets a single Thing from the DB
 module.exports.show = function(req, res) {
+    console.log("show from id");
   User.findByIdAsync(req.params.id)
+    .then(handleEntityNotFound(res))
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+}
+module.exports.showUser = function(req, res) {
+    console.log("show from username");
+  User.findAsync({ 'username': req.params.username})
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));

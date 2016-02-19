@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope'];
-    function HomeController(UserService, $rootScope) {
+    HomeController.$inject = ['UserService', '$rootScope', '$log'];
+    function HomeController(UserService, $rootScope, $log) {
         var vm = this;
 
         vm.user = null;
@@ -21,9 +21,10 @@
         }
 
         function loadCurrentUser() {
+            $log.debug("user"+$rootScope.globals.currentUser.username);
             UserService.GetByUsername($rootScope.globals.currentUser.username)
                 .then(function (user) {
-                    vm.user = user;
+                    vm.user = user[0];
                 });
         }
 

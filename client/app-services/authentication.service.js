@@ -5,8 +5,8 @@
         .module('app')
         .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'UserService'];
-    function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserService) {
+    AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'UserService', '$log'];
+    function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserService, $log) {
         var service = {};
 
         service.Login = Login;
@@ -34,15 +34,20 @@
 
             /* Use this for real authentication
              ----------------------------------------------*/
+                      
             $http.post('/api/authenticate', { username: username, password: password })
                 .success(function (response) {
-                    console.log("response"+response);
                      if (response !== null) {
                             response = { success: true };
                         } else {
                             response = { success: false, message: 'Username or password is incorrect' };
                         }
                     callback(response);
+                }).error(function(response){
+                    if(response.status == 404){
+                        response = { success: false, message: 'Username or password is incorrect' };
+                        callback(response);
+                     }
                 });
 
         }
