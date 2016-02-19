@@ -8,19 +8,20 @@
     ChatController.$inject = ['UserService', '$rootScope', '$log'];
     function ChatController(UserService, $rootScope, $log) {
         var vm = this;
-        vm.user = null;
         vm.allUsers = [];
-        vm.prova = "ciao";
-        
-         function initController() {
+        vm.createMsg = createMsg;
+        vm.msg = "";
+
+        function initController() {
             loadCurrentUser();
             loadAllUsers();
         }
-        
-    function sendMsg() {
-        $log.log('msg: ');
-    }
-        
+
+        function createMsg(msg) {
+            $log.log(vm.user);
+            return $rootScope.globals.currentUser.username + ": " + msg;
+        }
+
         function loadCurrentUser() {
             UserService.GetByUsername($rootScope.globals.currentUser.username)
                 .then(function (user) {
@@ -37,3 +38,4 @@
     }
 
 })();
+
