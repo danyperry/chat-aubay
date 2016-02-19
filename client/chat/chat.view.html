@@ -1,0 +1,34 @@
+<style>
+    #messages { list-style-type: none; margin: 0; padding: 0; }
+    #messages li { padding: 5px 10px; }
+    #messages li:nth-child(odd) { background: #eee; }
+</style>	
+  <table class="table">
+    <tr>
+        <td></td>
+        <td><ul id="messages"></ul></td>
+    </tr>      
+  </table>
+    
+    <form action="">
+      <input id="m" ng-model="vm.prova" autocomplete="off" />
+      <button class="btn btn-default navbar-btn" ng-click="vm.sendMsg()">Send</button>
+    </form>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<!--	<script>
+	  var socket = io();
+	  $('form').submit(function(){
+		var messaggio = angular.element(document.getElementById('ChatController')).sendMsg($('#m').val());
+        console.log(messaggio);
+        socket.emit('chat message', messaggio);
+        $('#m').val('');
+        messaggio = '';
+        return false;
+	  });
+	  socket.on('chat message', function(msg){
+		$('#messages').append($('<li>').text(msg));
+	  });
+	</script> -->
+  </body>
+</html>

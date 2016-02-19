@@ -12,6 +12,11 @@ angular.module('app', ['ngRoute', 'ngCookies'])
                 templateUrl: 'home/home.view.html',
                 controllerAs: 'vm'
             })
+            .when('/chat', {
+                controller: 'ChatController',
+                templateUrl: 'chat/chat.view.html',
+                controllerAs: 'vm'
+            })
 
             .when('/login', {
                 controller: 'LoginController',
