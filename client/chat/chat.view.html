@@ -12,16 +12,17 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
 </style>
-<table class="table table-hover">
-    <th><h3 style="text-align:center">LAVORARE OGNI TANTO NO EH?!?</h3></th>
-    <tr><!--
-        <td>
+<table class="table table-striped">
+    <thead><h3 style="text-align:center">LAVORARE OGNI TANTO NO EH?!?</h3></thead>
+    <tbody id="messages"></tbody>
+    <!--<tr>
+        <td id="users" class="col-md-2">
             <ul id="users"></ul>
         </td>
--->        <td>
+        <td id="messages">
             <ul id="messages"></ul>
         </td>
-    </tr>
+    </tr>-->
 </table>
 
 <form action="">
@@ -39,14 +40,17 @@
     var user = "";
     $('form').submit(function(){
         user = angular.element($('#m')).controller().user;
-        console.log(user);
-        console.log(angular.element($('#m')).controller());
+        //console.log(user);
+        //console.log(angular.element($('#m')).controller());
         socket.emit('chat message', angular.element($('#m')).controller().createMsg($('#m').val()));
         $('#m').val('');
         return false;
     });
     socket.on('chat message', function(msg){
-        //$('#users').append($('<li style="font-weight:bold">').text(user).append('</li>'));
-        $('#messages').append($('<li>').text(msg));
+        console.log('user: ' + msg[0]);
+        console.log('msg: ' + msg[1]);
+        //$('#users').append($('<div style="font-weight:bold">').text(msg[0]));
+        //$('#messages').append($('<div>').text(msg[1]));
+        $('#messages').append($('<tr><td class="col-md-2" style="font-weight:bold">' + msg[0] + "</td><td>" + msg[1] + "</td></tr>"));
     });
 </script>

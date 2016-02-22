@@ -4,7 +4,9 @@
 <ul>
     <li ng-repeat="user in vm.allUsers">
         {{user.username}} ({{user.firstName}} {{user.lastName}})
-        - <a href="#" ng-click="vm.deleteUser(user._id)">Delete</a>
+        <span ng-if="user._id === vm.user._id">
+            - <a href="#/login" ng-click="vm.deleteUser(user._id)">Delete</a>
+        </span>
     </li>
 </ul>
 <p>&nbsp;</p>

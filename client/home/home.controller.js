@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope', '$log'];
-    function HomeController(UserService, $rootScope, $log) {
+    HomeController.$inject = ['UserService', '$rootScope', '$log', 'FlashService'];
+    function HomeController(UserService, $rootScope, $log, FlashService) {
         var vm = this;
 
         vm.user = null;
@@ -39,6 +39,7 @@
             UserService.Delete(id)
             .then(function () {
                 loadAllUsers();
+                FlashService.Success("Utente cancellato correttamente.");
             });
         }
     }
