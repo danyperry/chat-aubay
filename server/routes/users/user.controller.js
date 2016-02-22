@@ -1,11 +1,12 @@
 var User = require('./user.model');
 var lodash = require("lodash");
+
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
   return function(entity) {
        
     if (entity) {
-         console.log("respondWithResult:"+ entity);
+    	res.success = true;
          res.status(statusCode).json(entity);
       //console.log(entity);
     }
@@ -15,7 +16,6 @@ function respondWithResult(res, statusCode) {
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
-       console.log("handleError:"+ err);  
     res.status(statusCode).send(err);
      };
 }
@@ -25,9 +25,7 @@ function handleError(res, statusCode) {
 function handleEntityNotFound(res) {
     
   return function(entity) {
-    console.log("handleEntityNotFound:"+ entity.length);   
     if (entity.length == 0) {
-         console.log("handleEntityNotFound status 404:"+ entity);   
       res.status(404).end();
       //res.end();
       return null;
@@ -58,6 +56,19 @@ function saveUpdates(updates) {
   };
 }
 
+function checkIfExitUser(res){
+	var trovato = false;
+	return function(entity) {
+		console.log(entity);
+    	if (entity.length == 0) {
+    		trovato = false;    	}
+    	else{ 
+    		trovato = true;
+    	}
+	};
+	return trovato;
+}
+
 // Gets a list of Things
 module.exports.index = function(req, res) {
     //res.send("ciao index");
@@ -71,10 +82,23 @@ module.exports.index = function(req, res) {
 }
 
 module.exports.create = function(req, res) {
-    console.log(req.body);
-    User.createAsync(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
+	var trovato = false;
+	User.findAsync({ 'username': req.body.username})
+	.then(function(entity) {
+		if (entity.length == 0) {
+			res.success = true;
+		}
+    	else{ 
+    		trovato = true;
+    		return res.status(404).end();
+    	}
+	}).then(function(entity) {
+		if(!trovato){
+			User.createAsync(req.body)
+		    	.then(respondWithResult(res, 200))
+		    	.catch(handleError(res));
+	    }
+	});
 }    
 
 module.exports.destroy = function(req, res) {
@@ -86,14 +110,12 @@ module.exports.destroy = function(req, res) {
 
 // Gets a single Thing from the DB
 module.exports.show = function(req, res) {
-    console.log("show from id");
   User.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 module.exports.showUser = function(req, res) {
-    console.log("show from username");
   User.findAsync({ 'username': req.params.username})
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
@@ -102,7 +124,6 @@ module.exports.showUser = function(req, res) {
 
 // Gets a single Thing from the DB
 module.exports.authenticate = function(req, res) {
-  console.log(req.body);  
   User.findAsync({ 'username': req.body.username, 'password': req.body.password})
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))

@@ -10,12 +10,14 @@
     </tr>      
   </table>
     
-    <form action="">
+     <form name="form" ng-submit="vm.sendMsg()" role="form">
       <input id="m" ng-model="vm.prova" autocomplete="off" />
-      <button class="btn btn-default navbar-btn" ng-click="vm.sendMsg()">Send</button>
-    </form>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+        <button type="submit" class="btn btn-primary">chat</button>
+     </form>
+     
+     {{vm.userLogged}}
+	<!--<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>-->
 <!--	<script>
 	  var socket = io();
 	  $('form').submit(function(){
@@ -30,5 +32,3 @@
 		$('#messages').append($('<li>').text(msg));
 	  });
 	</script> -->
-  </body>
-</html>
