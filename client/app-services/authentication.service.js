@@ -8,7 +8,7 @@
     AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'UserService', '$log'];
     function AuthenticationService($http, $cookieStore, $rootScope, $timeout, UserService, $log) {
         var service = {};
-
+        $rootScope.userLogged = [];
         service.Login = Login;
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
@@ -44,23 +44,24 @@
                         }
                     callback(response);
                 }).error(function(response){
-                    if(response.status == 404){
+                    //if(response.status == 404){
                         response = { success: false, message: 'Username or password is incorrect' };
                         callback(response);
-                     }
+                   //  }
                 });
 
         }
 
         function SetCredentials(username, password) {
             var authdata = Base64.encode(username + ':' + password);
-
+            
             $rootScope.globals = {
                 currentUser: {
                     username: username,
                     authdata: authdata
                 }
             };
+            $rootScope.userLogged.push(username);
 
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $cookieStore.put('globals', $rootScope.globals);
