@@ -6,10 +6,7 @@ function respondWithResult(res, statusCode) {
   return function(entity) {
        
     if (entity) {
-<<<<<<< HEAD
     	res.success = true;
-=======
->>>>>>> 4fbb2c3e5a8524e40a617309d44f977cd25665af
          res.status(statusCode).json(entity);
       //console.log(entity);
     }

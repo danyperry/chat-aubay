@@ -20,7 +20,9 @@
 		"connect-mongo": "^0.8.1",
 		"errorhandler": "^1.4.2",
 		"mongoose": "~3.6.13",
-		"serve-favicon": "^2.3.0"
+		"serve-favicon": "^2.3.0",
+        "lodash": "^4.3.0",
+        "iniparser": "^1.0.5"
     },
     "devDependencies" : {
         "babel-core": "^5.6.4"
