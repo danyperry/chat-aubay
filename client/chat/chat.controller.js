@@ -5,30 +5,24 @@
         .module('app')
         .controller('ChatController', ChatController);
 
-   
+    ChatController.$inject = ['UserService', '$rootScope', '$log'];
     function ChatController(UserService, $rootScope, $log) {
         var vm = this;
-        vm.user = null;
+        vm.user = "";
         vm.allUsers = [];
-        vm.prova = "ciao";
-        
-        //var service = {};
+        vm.createMsg = createMsg;
+        vm.msg = "";
 
-        vm.sendMsg = sendMsg;
-        vm.userLogged = $rootScope.userLogged;
-        
-        (function initController() {
-           
-            //loadCurrentUser();
-            //loadAllUsers();
-            
-           
-        })();
-        
-        function sendMsg() {
-            $log.debug('msg: ');
+        function initController() {
+            loadCurrentUser();
+            loadAllUsers();
         }
-        
+
+        function createMsg(msg) {
+            vm.user = $rootScope.globals.currentUser.username;
+            return $rootScope.globals.currentUser.username + ": " + msg;
+        }
+
         function loadCurrentUser() {
             UserService.GetByUsername($rootScope.globals.currentUser.username)
                 .then(function (user) {
