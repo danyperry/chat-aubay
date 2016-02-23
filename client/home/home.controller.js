@@ -39,7 +39,7 @@
             UserService.Delete(id)
             .then(function () {
                 loadAllUsers();
-                FlashService.Success("Utente cancellato correttamente.");
+                FlashService.Success("Utente cancellato correttamente.",true);
             });
         }
     }

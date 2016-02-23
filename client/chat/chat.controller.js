@@ -20,7 +20,7 @@
 
         function createMsg(msg) {
             vm.user = $rootScope.globals.currentUser.username;
-            return [$rootScope.globals.currentUser.username + ": ", msg];
+            return [$rootScope.globals.currentUser.username, msg];
         }
 
         function loadCurrentUser() {
