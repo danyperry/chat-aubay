@@ -59,7 +59,7 @@ function saveUpdates(updates) {
 function checkIfExitUser(res){
 	var trovato = false;
 	return function(entity) {
-		console.log(entity);
+		//console.log(entity);
     	if (entity.length == 0) {
     		trovato = false;    	}
     	else{ 

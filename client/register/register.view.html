@@ -3,22 +3,22 @@
     <form name="form" ng-submit="vm.register()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.nome.$dirty && form.nome.$error.required }">
             <label for="nome">First name</label>
-            <input type="text" name="nome" id="nome" class="form-control" ng-model="vm.user.nome" required />
+            <input type="text" name="nome" id="nome" class="form-control" ng-model="vm.user.nome" limit-to="20" required />
             <span ng-show="form.nome.$dirty && form.nome.$error.required" class="help-block">First name is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.cognome.$dirty && form.cognome.$error.required }">
             <label for="username">Last name</label>
-            <input type="text" name="cognome" id="Text1" class="form-control" ng-model="vm.user.cognome" required />
+            <input type="text" name="cognome" id="Text1" class="form-control" ng-model="vm.user.cognome" limit-to="20" required />
             <span ng-show="form.cognome.$dirty && form.cognome.$error.required" class="help-block">Last name is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" class="form-control" ng-model="vm.user.username" required />
+            <input type="text" name="username" id="username" class="form-control" ng-model="vm.user.username" limit-to="15" required />
             <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control" ng-model="vm.user.password" required />
+            <input type="password" name="password" id="password" class="form-control" ng-model="vm.user.password" limit-to="15" required />
             <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
         </div>
         <div class="form-actions">
