@@ -198,12 +198,12 @@ module.exports.userLogged = function(req, res, next) {
 }
 
 function addLogged(id,username){
-    console.log("id user:"+id);
+    //console.log("id user:"+id);
     Logged.findOneAsync({ _id: id }, '-salt -password')
    
 	.then(user => { // don't ever give out the password or salt
       if (!user) {
-         console.log("entrato in null" + user);
+         //console.log("entrato in null" + user);
 	     Logged.createAsync({ '_id': id, 'username': username});
 		}
       })

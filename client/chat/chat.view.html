@@ -26,7 +26,20 @@
         <h3 style="text-align:center">LAVORARE OGNI TANTO NO EH?!?</h3>
     </div>
     
-    <div id="messages" style="width: 70%; position: absolute; top: 110px; height: 75%; overflow-y: auto; padding-right: 20px;"></div>
+    <div id="messages" style="width: 70%; position: absolute; top: 110px; height: 75%; overflow-y: auto; padding-right: 20px;">
+        <div ng-repeat="msg in vm.messages">
+            <!-- Se il messaggio non è dell'utente loggato -->
+            <div ng-if="msg.user !== vm.getCurrentUser().username" style="float:left; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #adebeb;">
+                <div style="font-weight:bold; font-size:12px"> {{msg.user}} </div>
+                <div> {{msg.message}} </div>
+            </div>
+            <!-- Se il messaggio è dell'utente loggato -->
+            <div ng-if="msg.user === vm.getCurrentUser().username" style="float:right; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #aaff80;">
+                <div> {{msg.message}} </div>
+            </div>
+            <div style="clear:both"/>
+        </div>
+    </div>
     
     <footer style="position: absolute; bottom: 0; width: 70%; height: 60px;">
         <input id="m" placeholder="Inserisci testo" ng-model="vm.message" autocomplete="off" required/>
@@ -35,10 +48,8 @@
 
 </form>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-
 <script>
+    /*
     //socket dei messaggi
     var socket = io();
     var user = "";
@@ -54,10 +65,11 @@
             $('#messages').append($('<div style="float:right; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #aaff80;">' + msg[1] + '</div></div><div style="clear:both"/>'));
         } else {
             $('#messages').append($('<div style="float:left; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #adebeb;"><div style="font-weight:bold; font-size:12px">' + msg[0] + ':</div><div>' + msg[1] + '</div></div><div style="clear:both"/>'));
-           notifica(msg);
+            notifica(msg);
         }
         scrollToBottom();
     });
+    */
     
     //scroll to bottom
     function scrollToBottom(){
@@ -90,5 +102,13 @@
     var input = document.getElementById("m");
     input.addEventListener("focus",function(){
         document.title = "Chat Aubay";
+    })
+    
+    //update messages
+    var messages = document.getElementById("messages");
+    //var lastMessage = angular.element($('#m')).controller().vm.messages.
+    messages.addEventListener("DOMCharacterDataModified",function(){
+        scrollToBottom();
+        //if ()
     })
 </script>

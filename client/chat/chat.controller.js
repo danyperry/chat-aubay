@@ -40,18 +40,18 @@
         */
         vm.user = "";
         vm.allUsers = [];
-        vm.createMsg = createMsg;
+        //vm.createMsg = createMsg;
         vm.msg = "";
         
         
-
+/*
         function createMsg(msg) {
             //vm.user = vm.getCurrentUser;
-           //return vm.getCurrentUser().username + ": " + msg;
+            //return vm.getCurrentUser().username + ": " + msg;
             vm.user = $rootScope.globals.currentUser.username;
             return [$rootScope.globals.currentUser.username, msg];
         }
-
+*/
         function loadCurrentUser() {
             vm.user = vm.getCurrentUser;
         }
@@ -62,7 +62,7 @@
                     vm.allUsers = users;
                 });
            
-            $log.debug("userLogged" +vm.allUsers);
+            //$log.debug("userLogged" +vm.allUsers);
             
             
             //vm.allUsers = $rootScope.userLogged;
@@ -76,9 +76,9 @@
         }
         
         function sendMessage() {
-            $log.debug("message: "+vm.message);
-            var msg = vm.getCurrentUser().username + ": " + vm.message;
-            socket.emit('send:message', { message: msg});
+            //$log.debug("message: "+vm.message);
+            var msg = {user: vm.getCurrentUser().username, message: vm.message};
+            socket.emit('send:message', msg);
             
             // add the message to our model locally
             vm.messages.push(msg);
@@ -87,12 +87,13 @@
         };
         
         function utenteConnesso() {
-            $log.debug("message: "+vm.message);
-            var msg = vm.getCurrentUser().username + ": è entrato nella chat";
-            socket.emit('send:message', { message: msg});
+            //$log.debug("message: "+vm.message);
+            var msg = {user: vm.getCurrentUser().username, message: "è entrato nella chat"};
+            socket.emit('send:message', msg);
             
             // add the message to our model locally
-            vm.messages.push(msg);
+            //TODO
+            //vm.messages.push(msg);
             // clear message box
             vm.message = '';
         };
