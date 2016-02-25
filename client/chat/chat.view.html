@@ -31,6 +31,7 @@
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 
 <script>
+    //socket dei messaggi
     var socket = io();
     var user = "";
     $('form').submit(function(){
@@ -45,12 +46,41 @@
             $('#messages').append($('<div style="float:right; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #aaff80;">' + msg[1] + '</div></div><div style="clear:both"/>'));
         } else {
             $('#messages').append($('<div style="float:left; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #adebeb;"><div style="font-weight:bold; font-size:12px">' + msg[0] + ':</div><div>' + msg[1] + '</div></div><div style="clear:both"/>'));
+           notifica(msg);
         }
         scrollToBottom();
     });
     
+    //scroll to bottom
     function scrollToBottom(){
         $('#messages').animate({
         scrollTop: $('#messages').get(0).scrollHeight});
     }
+    
+    //setta il focus sull'input al caricamento della pagina
+    $(document).ready(function(){
+        $("#m").focus();
+    })
+    
+    //notifiche all'arrivo di nuovi messaggi
+    function notifica(msg){
+        if(! ('Notification' in window) ){
+            console.log('Web Notification not supported');
+            return;
+        }   
+
+        Notification.requestPermission(function(permission){
+            document.title = "New Messages!";
+            var notification = new Notification("Nuovo messaggio!",{body:msg[0] + ": " + msg[1],icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
+            setTimeout(function(){
+                notification.close();
+            },3000);
+        });
+    }
+    
+    //reset titolo
+    var input = document.getElementById("m");
+    input.addEventListener("focus",function(){
+        document.title = "Chat Aubay";
+    })
 </script>
