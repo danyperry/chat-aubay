@@ -47,7 +47,9 @@
 
         function createMsg(msg) {
             //vm.user = vm.getCurrentUser;
-          return vm.getCurrentUser().username + ": " + msg;
+           //return vm.getCurrentUser().username + ": " + msg;
+            vm.user = $rootScope.globals.currentUser.username;
+            return [$rootScope.globals.currentUser.username, msg];
         }
 
         function loadCurrentUser() {

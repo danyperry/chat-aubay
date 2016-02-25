@@ -58,6 +58,20 @@ function saveUpdates(updates) {
   };
 }
 
+/*
+function checkIfExitUser(res){
+	var trovato = false;
+	return function(entity) {
+		//console.log(entity);
+    	if (entity.length == 0) {
+    		trovato = false;    	}
+    	else{ 
+    		trovato = true;
+    	}
+	};
+	return trovato;
+}
+*/
 
 // Gets a list of Things
 module.exports.index = function(req, res) {

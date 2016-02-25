@@ -1,7 +1,7 @@
 <style>
      * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { padding: 3px; position: fixed; bottom: 0; width: 70%; }
+      /*form { padding: 3px; position: fixed; bottom: 0; width: 70%; }*/
       form input { border: 5; padding: 10px; width: 90%; margin-right: .5%; margin-bottom: 20px; }
       form button { width: 9%; background: rgb(130, 224, 255); border: 5; padding: 10px; }
     /*  #users { list-style-type: none; margin: 0; padding: 0; }
@@ -12,16 +12,6 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
 </style>
-<div style="float:left; width: 800px;">
-    <table class="table table-hover">
-        <th><h3 style="text-align:center">LAVORARE OGNI TANTO NO EH?!?</h3></th>
-        <tr>
-            <td>
-                <ul id="messages"></ul>
-            </td>
-        </tr>
-    </table>
-</div>
 
 <div>
     Utenti loggati  {{ vm.getCurrentUser().nome }}
@@ -30,12 +20,19 @@
     </div>
 </div>
 
-
-<form  ng-submit="vm.sendMessage()">
-    <span>
+<form ng-submit="vm.sendMessage()">
+    <div style="padding: 3px; position: fixed; top: 0; width: 70%">
+        <a href="#/login" class="btn btn-primary" style="float:right">Logout</a></br>
+        <h3 style="text-align:center">LAVORARE OGNI TANTO NO EH?!?</h3>
+    </div>
+    
+    <div id="messages" style="width: 70%; position: absolute; top: 110px; height: 75%; overflow-y: auto; padding-right: 20px;"></div>
+    
+    <footer style="position: absolute; bottom: 0; width: 70%; height: 60px;">
         <input id="m" placeholder="Inserisci testo" ng-model="vm.message" autocomplete="off" required/>
-        <button ng-disabled="form.$invalid">Send</button>
-    </span>
+        <button ng-disabled="form.$invalid" class="btn btn-secondary">Send</button>
+    </footer>
+
 </form>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -46,14 +43,22 @@
     var user = "";
     $('form').submit(function(){
         user = angular.element($('#m')).controller().user;
-        console.log(user);
-        console.log(angular.element($('#m')).controller());
         socket.emit('chat message', angular.element($('#m')).controller().createMsg($('#m').val()));
         $('#m').val('');
         return false;
     });
     socket.on('chat message', function(msg){
-        //$('#users').append($('<li style="font-weight:bold">').text(user).append('</li>'));
-        $('#messages').append($('<li>').text(msg));
+        user = angular.element($('#m')).controller().user;
+        if (user === msg[0]) {
+            $('#messages').append($('<div style="float:right; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #aaff80;">' + msg[1] + '</div></div><div style="clear:both"/>'));
+        } else {
+            $('#messages').append($('<div style="float:left; padding:10px; display:inline-block; border-radius:7.5px; box-shadow:0 1px .5px; margin:10px 0px 10px 0px; background-color: #adebeb;"><div style="font-weight:bold; font-size:12px">' + msg[0] + ':</div><div>' + msg[1] + '</div></div><div style="clear:both"/>'));
+        }
+        scrollToBottom();
     });
+    
+    function scrollToBottom(){
+        $('#messages').animate({
+        scrollTop: $('#messages').get(0).scrollHeight});
+    }
 </script>

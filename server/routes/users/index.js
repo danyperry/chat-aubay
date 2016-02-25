@@ -12,7 +12,7 @@ router.get('/users/logged', controller.userLogged);
 router.get('/users/:username', controller.showUser);
 router.post('/users', controller.create);
 router.delete('/users/:id', controller.destroy);
-router.put('users/:id', controller.update);
+router.put('/users/:id', controller.update);
 
 
 module.exports = router;

@@ -1,23 +1,32 @@
 {
-  "name": "socket-chat-example",
-  "version": "0.0.1",
-  "description": "my first socket.io app",
-  "dependencies": {
-    "babel": "^6.5.1",
-    "bluebird": "^2.9.34",
-    "body-parser": "^1.13.3",
-    "composable-middleware": "^0.3.0",
-    "connect-mongo": "^0.8.1",
-    "errorhandler": "^1.4.2",
-    "express": "^4.13.4",
-    "express-session": "^1.11.3",
-    "jsonwebtoken": "^5.7.0",
-    "lodash": "^3.10.1",
-    "mongoose": "~3.6.13",
-    "serve-favicon": "^2.3.0",
-    "socket.io": "^1.4.5"
-  },
-  "devDependencies": {
-    "babel-core": "^5.6.4"
-  }
+    "name": "Aubay-chat",
+    "version": "0.0.1",
+    "description": "my first socket.io app",
+    "dependencies": {
+        "express": "^4.13.4",
+        "socket.io": "^1.4.5",
+        "body-parser": "^1.13.3",
+        "express-session": "^1.11.3",
+        "errorhandler": "^1.4.2",
+        "composable-middleware": "^0.3.0",
+        "mongoose": "~3.6.13",
+        "bluebird": "^2.9.34",
+        "connect-mongo": "^0.8.1",
+        "serve-favicon": "^2.3.0",
+		"babel": "^6.5.1",
+		"bluebird": "^2.9.34",
+		"body-parser": "^1.13.3",
+		"composable-middleware": "^0.3.0",
+		"connect-mongo": "^0.8.1",
+		"errorhandler": "^1.4.2",
+		"mongoose": "~3.6.13",
+		"serve-favicon": "^2.3.0",
+        "lodash": "^4.3.0",
+        "socket.io": "^1.4.5",
+        "iniparser": "^1.0.5"
+    },
+    "devDependencies" : {
+        "babel-core": "^5.6.4"
+    }
 }
+
