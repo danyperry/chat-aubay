@@ -13,7 +13,14 @@
       #messages li:nth-child(odd) { background: #eee; }
 </style>
 
-<form action="">
+<div>
+    Utenti loggati  {{ vm.getCurrentUser().nome }}
+    <div ng-repeat="user in vm.allUsers">
+        user: {{user.username}}
+    </div>
+</div>
+
+<form ng-submit="vm.sendMessage()">
     <div style="padding: 3px; position: fixed; top: 0; width: 70%">
         <a href="#/login" class="btn btn-primary" style="float:right">Logout</a></br>
         <h3 style="text-align:center">LAVORARE OGNI TANTO NO EH?!?</h3>
@@ -22,9 +29,10 @@
     <div id="messages" style="width: 70%; position: absolute; top: 110px; height: 75%; overflow-y: auto; padding-right: 20px;"></div>
     
     <footer style="position: absolute; bottom: 0; width: 70%; height: 60px;">
-        <input id="m" placeholder="Inserisci testo" autocomplete="off" required/>
+        <input id="m" placeholder="Inserisci testo" ng-model="vm.message" autocomplete="off" required/>
         <button ng-disabled="form.$invalid" class="btn btn-secondary">Send</button>
     </footer>
+
 </form>
 
 <script src="/socket.io/socket.io.js"></script>
