@@ -5,9 +5,10 @@
         .module('app')
         .factory('UserService', UserService);
 
-    UserService.$inject = ['$http'];
-    function UserService($http) {
-        var service = {};
+    UserService.$inject = ['$http', 'socket'];
+    function UserService($http, socket) {
+        var service = this;
+        service.userLogged = [];
 
         service.GetAll = GetAll;
         service.GetById = GetById;
@@ -15,7 +16,9 @@
         service.Create = Create;
         service.Update = Update;
         service.Delete = Delete;
-
+        service.addUserLogged = addUserLogged;
+        service.getUserLogged = getUserLogged;
+        
         return service;
 
         function GetAll() {
@@ -52,6 +55,17 @@
             return function () {
                 return { success: false, message: error };
             };
+        }
+        
+        function addUserLogged(user){
+            socket.emit('send:message', { user: user});
+            service.userLogged.push(user);
+            //return service.userLogged;
+        }
+        
+        function getUserLogged(){
+            return $http.get('/api/users/logged').then(handleSuccess, handleError('Error getting all users logged'));
+       
         }
     }
 

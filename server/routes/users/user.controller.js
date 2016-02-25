@@ -1,4 +1,6 @@
 var User = require('./user.model');
+var Logged = require('./logged.model');
+var Auth = require('./auth.service');
 var lodash = require("lodash");
 
 function respondWithResult(res, statusCode) {
@@ -112,11 +114,36 @@ module.exports.showUser = function(req, res) {
 }
 
 // Gets a single Thing from the DB
-module.exports.authenticate = function(req, res) {
-  User.findAsync({ 'username': req.body.username, 'password': req.body.password})
-    .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+module.exports.authenticate = function(req, res, next) {
+ 
+  User.findOneAsync({ 'username': req.body.username.username, 'password': req.body.username.password})
+  
+    //.then(handleEntityNotFound(res))
+    .then(user => {
+      if (user) {
+        var token = Auth.signToken(user._id, user.role);
+        addLogged(user._id, user.username); 
+        res.json({ token });
+      }else{
+          /* err.message= 'This password is not correct.';
+            res.json({ err });*/ 
+          return res.status(401).json({message: 'This password is not correct.'});
+      }
+      
+    })
+    .catch(err => { 
+            err.message= ' Si è verificato un problema nel login. ';
+            res.json({ err });
+            next(err) }
+    );
+    
+
+  
+  
+    
+    //.then(handleEntityNotFound(res))
+    //.then(respondWithResult(res))
+    
     
   /*User.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
@@ -133,3 +160,39 @@ module.exports.update = function(req, res) {
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
+
+/**
+ * Get my info
+ */
+module.exports.me = function(req, res, next) {
+  var userId = req.user._id;
+
+  User.findOneAsync({ _id: userId }, '-salt -password')
+    .then(user => { // don't ever give out the password or salt
+      if (!user) {
+        return res.status(401).end();
+      }
+      res.json(user);
+    })
+    .catch(err => next(err));
+}
+
+module.exports.userLogged = function(req, res, next) {
+   Logged.findAsync()
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+}
+
+function addLogged(id,username){
+    console.log("id user:"+id);
+    Logged.findOneAsync({ _id: id }, '-salt -password')
+   
+	.then(user => { // don't ever give out the password or salt
+      if (!user) {
+         console.log("entrato in null" + user);
+	     Logged.createAsync({ '_id': id, 'username': username});
+		}
+      })
+      .catch(err => console.log("errore message"));
+}
+

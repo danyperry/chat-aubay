@@ -5,18 +5,23 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope', '$log'];
-    function HomeController(UserService, $rootScope, $log) {
+    HomeController.$inject = ['UserService', '$rootScope', '$log', 'Auth'];
+    function HomeController(UserService, $rootScope, $log, Auth) {
         var vm = this;
 
         vm.user = null;
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
-
+        
+        vm.isLoggedIn = Auth.isLoggedIn;
+        vm.isAdmin = Auth.isAdmin;
+        vm.getCurrentUser = Auth.getCurrentUser;
+     
         initController();
 
         function initController() {
-            loadCurrentUser();
+            $log.debug("current user: "+vm.getCurrentUser().nome);
+            //loadCurrentUser();
             loadAllUsers();
         }
 

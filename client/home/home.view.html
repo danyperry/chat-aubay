@@ -1,4 +1,4 @@
-﻿<h1>Hi {{vm.user.username}} {{vm.user.email}}!</h1>
+﻿<h1>Hi {{ vm.getCurrentUser().nome }}</h1>
 <p>You're logged in!!</p>
 <h3>All registered users:</h3>
 <ul>
@@ -8,5 +8,5 @@
     </li>
 </ul>
 <p>&nbsp;</p>
-<p><a href="#/login" class="btn btn-primary">Logout</a></p>
+<p><a href="#/logout" class="btn btn-primary">Logout</a></p>
 <p><a href="#/chat" class="btn btn-primary">CAZZO VUOI CHATTARE?!?</a></p>
