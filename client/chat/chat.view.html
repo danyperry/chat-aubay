@@ -88,6 +88,7 @@
             console.log('Web Notification not supported');
             return;
         }   
+
         Notification.requestPermission(function(permission){
             document.title = "New Messages!";
             var notification = new Notification("Nuovo messaggio!",{body:msg[0] + ": " + msg[1],icon:'http://i.stack.imgur.com/Jzjhz.png?s=48&g=1', dir:'auto'});
