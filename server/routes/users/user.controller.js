@@ -2,6 +2,13 @@ var User = require('./user.model');
 var Logged = require('./logged.model');
 var Auth = require('./auth.service');
 var lodash = require("lodash");
+var nameCounter = 1;
+var participants = [];
+
+var express = require('express');
+var app = express(); 
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -129,15 +136,18 @@ module.exports.showUser = function(req, res) {
 
 // Gets a single Thing from the DB
 module.exports.authenticate = function(req, res, next) {
- 
+  
   User.findOneAsync({ 'username': req.body.username.username, 'password': req.body.username.password})
   
     //.then(handleEntityNotFound(res))
     .then(user => {
       if (user) {
+       
         var token = Auth.signToken(user._id, user.role);
         addLogged(user._id, user.username); 
         res.json({ token });
+        socketNewUser(user);
+        
       }else{
           /* err.message= 'This password is not correct.';
             res.json({ err });*/ 
@@ -150,8 +160,9 @@ module.exports.authenticate = function(req, res, next) {
             res.json({ err });
             next(err) }
     );
+  
     
-
+    
   
   
     
@@ -208,5 +219,12 @@ function addLogged(id,username){
 		}
       })
       .catch(err => console.log("errore message"));
+}
+
+function socketNewUser(userLogged){
+     console.log("socket io: connection prima");
+     
+     
+   
 }
 

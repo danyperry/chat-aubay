@@ -36,11 +36,15 @@ angular.module('app', ['ngRoute', 'ngCookies', 'ngResource',
                 name: 'logout',
                 referrer: '/',
                 template: '',
-                controller: function($location, $route, Auth) {
+                controller: function($location, $route, Auth, $http) {
                     var referrer = $route.current.params.referrer ||
                                     $route.current.referrer ||
                                     '/';
+                    console.log("id logout"+Auth.getCurrentUser()._id);
+                    $http.post("/removeUserLoggato", {id: Auth.getCurrentUser()._id});
                     Auth.logout();
+                    
+                   
                     $location.path(referrer);
                 }
             })

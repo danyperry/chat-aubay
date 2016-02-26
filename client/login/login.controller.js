@@ -5,12 +5,12 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', 'AuthenticationService', 'FlashService', 'Auth', 'socket', 'UserService'];
-    function LoginController($location, AuthenticationService, FlashService, Auth, socket, UserService) {
+    LoginController.$inject = ['$location','$rootScope', 'AuthenticationService', 'FlashService', 'Auth', 'socket', 'UserService', '$log'];
+    function LoginController($location,$rootScope, AuthenticationService, FlashService, Auth, socket, UserService,$log) {
         var vm = this;
         vm.userLogged = [];
         vm.login = login;
-        
+        vm.$rootScope = $rootScope;
         
         this.user = {};
         this.errors = {};
@@ -18,6 +18,7 @@
 
         this.Auth = Auth;
         this.$location = $location;
+        vm.newUserConnected = newUserConnected;
 
         (function initController() {
             // reset login status
@@ -37,7 +38,7 @@
                     // Logged in, redirect to home
                     //socket.syncUpdates('users', vm.userLogged);
                     UserService.addUserLogged(this.Auth.getCurrentUser())
-                  
+                    newUserConnected(this.Auth.getCurrentUser());
                     this.$location.path('/');
                 })
                 .catch(err => {
@@ -47,6 +48,35 @@
                 });
             }
            
+        }
+        
+        function newUserConnected(user){
+            
+            let host = window.location.origin;
+            console.log("WEBSOCKET connecting to", host);
+
+            vm.socket = io.connect(host);
+            
+            vm.socket.on('connect', () => {
+                let sessionId = vm.socket.io.engine.id;
+
+                console.log("WEBSOCKET connected with session id", sessionId);
+                $log.debug('USER'+user.username);
+                vm.socket.emit('new_user', { user: user });
+                
+                /*
+                // this is the new event handler
+                vm.socket.on('new_connection', (data) => {
+
+                    if (data.user.id === sessionId) {
+                        vm.$rootScope.$apply(() => {
+                            $log.debug('new_connection dentro websocket');
+                            //Auth.setCurrentUser(data.user);
+                        });
+                    }
+                });*/
+            
+            })
         }
 
         function loginOld() {

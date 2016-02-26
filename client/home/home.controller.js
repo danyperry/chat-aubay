@@ -16,11 +16,12 @@
         vm.isLoggedIn = Auth.isLoggedIn;
         vm.isAdmin = Auth.isAdmin;
         vm.getCurrentUser = Auth.getCurrentUser;
-     
+       
         initController();
 
         function initController() {
             $log.debug("current user: "+vm.getCurrentUser().nome);
+            
             //loadCurrentUser();
             loadAllUsers();
         }
@@ -47,6 +48,9 @@
                 FlashService.Success("Utente cancellato correttamente.",true);
             });
         }
+        
+        
+        
     }
 
 })();
