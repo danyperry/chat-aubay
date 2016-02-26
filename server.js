@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 var _ = require("lodash");
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
+var services = require('./server/models/services');
 
 // Load the iniparser module
 var iniparser = require('iniparser');
@@ -45,27 +46,11 @@ io.on('connection', function(socket){
 });
 */
 
+/*
 var participants = [];
 var nameCounter  = 1;
 
 
-
-app.post("/messages", function(request, response) {
-  var message = request.body.message;
-
-  if(message && message.trim().length > 0) {
-    var user_id    = request.body.user_id;
-    var created_at = request.body.created_at;
-    var user       = _.findWhere(participants, { id: user_id });
-
-    // let our chatroom know there was a new message
-    io.sockets.emit("incoming_message", { message: message, user: user, created_at: created_at });
-    response.status(200).json({ message: "Message received" });
-    
-  } else {
-    return response.json(400, { error: "Invalid message" });
-  }
-});
 
 app.get("/partecipants", function(request, response) {
    response.status(200).json(participants);
@@ -85,7 +70,7 @@ app.post("/removeUserLoggato/", function(request, response) {
     io.sockets.emit("user_disconnected", { message: 'logout', username: user.username});
     response.status(200).json(participants);
 });
-
+*/
  //response.status(200).json({ message: "Message received" });
     io.on("connection", function(socket) {
         console.log("socket io: connectio inside");
@@ -95,7 +80,7 @@ app.post("/removeUserLoggato/", function(request, response) {
             if(data != null && data.user != null)
                 username = data.user.username
             var newName =  username;
-            participants.push({ id: data.user._id, username: username });
+            services.participants().push({ id: data.user._id, username: username });
             //console.log(participants);
             io.sockets.emit("new_connection", {
             user: {
@@ -104,10 +89,36 @@ app.post("/removeUserLoggato/", function(request, response) {
             },
             sender:"system",
             created_at: new Date().toISOString(),
-            participants: participants
+            participants: services.participants
             });
         });
     });
+    
+app.post("/messages/", function(request, response) {
+  var message = request.body.message;
+  var idUser1 = request.body.idUser1;
+  var idUser2 = request.body.idUser2;
+  
+  if(message && message.trim().length > 0) {
+    var user_id    = request.body.user_id;
+    var created_at = request.body.created_at;
+    var user       = _.find(services.participants(), { id: user_id });
+
+    var messagesRoom = services.messagesRooms();
+    var room = [];
+    for(var i = 0; i<messagesRoom.length; i++ ){
+        if(messagesRoom[i].users.indexOf(idUser1) != -1 && messagesRoom[i].users.indexOf(idUser2) != -1){  
+            room = messagesRoom[i];
+        }
+    }
+    // let our chatroom know there was a new message
+    io.sockets.emit("incoming_message", { message: message, user: user, created_at: created_at });
+    response.status(200).json({ message: "Message received" });
+    
+  } else {
+    return response.json(400, { error: "Invalid message" });
+  }
+})
 
 app.use(express.static("client"));
 //app.use(express.static("server"));

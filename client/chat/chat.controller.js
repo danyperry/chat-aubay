@@ -19,6 +19,8 @@
         vm.partecipants = [];
         initController();
         register();
+        
+       
 
         function register() {
             $log.debug("-------------------- entrato in register ------------------");
@@ -42,43 +44,12 @@
             loadPartecipants();
             
         }
-        
       
-       /* 
-        vm.socket.on('send:message', function (message) {
-            vm.messages.push(message);
-            $log.debug('lista messagges' +vm.messages);
-        });
-        */
-       /* vm.socket.on('user:join', function (data) {
-            vm.messages.push({
-            user: 'chatroom',
-            text: 'User ' + data.name + ' has joined.'
-            });
-            vm.users.push(data.name);
-        });
-        */
         vm.user = "";
         vm.allUsers = [];
-        //vm.createMsg = createMsg;
+      
         vm.msg = "";
         
-        
-/*
-        function createMsg(msg) {
-            //vm.user = vm.getCurrentUser;
-<<<<<<< HEAD
-           //return vm.getCurrentUser().username + ": " + msg;
-           // $rootScope.globals.currentUser.username
-            vm.user = "dany";
-            return ["$rootScope.globals.currentUser.username", msg];
-=======
-            //return vm.getCurrentUser().username + ": " + msg;
-            vm.user = $rootScope.globals.currentUser.username;
-            return [$rootScope.globals.currentUser.username, msg];
->>>>>>> c9132484cf22b993ad7640ba396f526ec960f881
-        }
-*/
         function loadCurrentUser() {
             vm.user = vm.getCurrentUser;
         }
@@ -149,7 +120,7 @@
         }
         
         function loadPartecipants(){
-             $http.get("/partecipants").then(
+             $http.get("/chat/partecipants").then(
                 (partecipants) => {
                     vm.partecipants = partecipants.data;
                 },

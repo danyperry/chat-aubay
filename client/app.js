@@ -41,7 +41,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'ngResource',
                                     $route.current.referrer ||
                                     '/';
                     console.log("id logout"+Auth.getCurrentUser()._id);
-                    $http.post("/removeUserLoggato", {id: Auth.getCurrentUser()._id});
+                    $http.post("/chat/removeUserLoggato", {id: Auth.getCurrentUser()._id});
                     Auth.logout();
                     
                    
