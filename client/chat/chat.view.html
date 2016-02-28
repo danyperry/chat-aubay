@@ -15,8 +15,12 @@
 
 <div>
     Utenti loggati  {{ vm.partecipants.length }}
-    <div ng-repeat="user in vm.partecipants">
-        user: {{user.username}}
+	<div style="margin:5px"> 
+		<a href="/#/chat/" ng-click="vm.openRoom('all')" > user: All </a>
+	</div>
+    <div ng-repeat="user in vm.partecipants" style="margin:5px;">
+		
+        <a href="/#/chat/" ng-click="vm.openRoom(user.id)" > user: {{user.username}} </a>
     </div>
 </div>
 

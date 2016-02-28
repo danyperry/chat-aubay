@@ -16,6 +16,7 @@
         vm.register =  register;
         vm.WebSocket = WebSocket;
         vm.sendMessage = sendMessage;
+		vm.openRoom = openRoom;
         vm.partecipants = [];
         initController();
         register();
@@ -35,6 +36,10 @@
             WebSocket.on('user_disconnected', (data) => {
                 handleUserDisconnected(data);
             });
+			
+			
+			
+
         }
 
         function initController() {
@@ -130,6 +135,22 @@
             );
             $log.log(vm.partecipants);
         }
+
+		function openRoom(id){
+			let params = {
+                idUser1:    id,
+                idUser2:    Auth.getCurrentUser()._id
+            };
+			$http.post("/chat/chatMessages", params).then(
+                messages => {
+                    vm.messages = messages;
+                },
+                (reason) => {
+                    console.log("error", reason);
+                }
+            );
+            $log.debug(vm.messages);
+		}
         
         
     }

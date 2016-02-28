@@ -16,8 +16,8 @@ angular.module('app', ['ngRoute', 'ngCookies', 'ngResource',
             .when('/chat', {
                 controller: 'ChatController',
                 templateUrl: 'chat/chat.view.html',
-                controllerAs: 'vm',
-                authenticate: 'admin'
+                controllerAs: 'vm' 
+                /*authenticate: 'admin'*/
             })
 
             .when('/login', {

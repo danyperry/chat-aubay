@@ -38,44 +38,16 @@ app.get('/', function(req, res){
 app.get('/chat', function(req, res){
   res.sendFile(__dirname + '/client/index.html');
 });
-/*
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
-});
-*/
 
-/*
-var participants = [];
-var nameCounter  = 1;
-
-
-
-app.get("/partecipants", function(request, response) {
-   response.status(200).json(participants);
-});
-
-app.post("/removeUserLoggato/", function(request, response) {
-    var user_id = request.body.id;
-    var user  = _.findWhere(participants, { id: user_id });
-     console.log("user_id"+user_id);
-    for (var i = 0; i < participants.length; i++) {
-        if(participants[i].id == user_id){
-            user = participants[i];
-            participants.splice(i,1);
-            break;
-        }
-    }
-    io.sockets.emit("user_disconnected", { message: 'logout', username: user.username});
-    response.status(200).json(participants);
-});
-*/
- //response.status(200).json({ message: "Message received" });
+//response.status(200).json({ message: "Message received" });
     io.on("connection", function(socket) {
         console.log("socket io: connectio inside");
         socket.on("new_user", function(data) {
             console.log("new_user: connectio inside server"+data);
+			services.messagesRooms().push({ 
+			        users: data.user._id,
+			        messages: []
+			    });
             var username;
             if(data != null && data.user != null)
                 username = data.user.username
@@ -107,6 +79,7 @@ app.post("/messages/", function(request, response) {
     var messagesRoom = services.messagesRooms();
     var room = [];
     for(var i = 0; i<messagesRoom.length; i++ ){
+		console.log(messagesRoom[i].users);
         if(messagesRoom[i].users.indexOf(idUser1) != -1 && messagesRoom[i].users.indexOf(idUser2) != -1){  
             room = messagesRoom[i];
         }
