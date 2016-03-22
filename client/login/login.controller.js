@@ -5,8 +5,8 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location','$rootScope', 'AuthenticationService', 'FlashService', 'Auth', 'socket', 'UserService', '$log'];
-    function LoginController($location,$rootScope, AuthenticationService, FlashService, Auth, socket, UserService,$log) {
+    LoginController.$inject = ['$location','$rootScope', 'AuthenticationService', 'FlashService', 'Auth', 'socket', 'UserService', '$log','WebSocket'];
+    function LoginController($location,$rootScope, AuthenticationService, FlashService, Auth, socket, UserService,$log, WebSocket) {
         var vm = this;
         vm.userLogged = [];
         vm.login = login;
@@ -76,7 +76,9 @@
                     }
                 });*/
             
-            })
+            });
+			
+            
         }
 
         function loginOld() {

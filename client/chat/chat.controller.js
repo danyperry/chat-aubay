@@ -20,6 +20,8 @@
         vm.partecipants = [];
         initController();
         register();
+		
+		vm.room = "All";
         
        
 
@@ -35,6 +37,10 @@
 
             WebSocket.on('user_disconnected', (data) => {
                 handleUserDisconnected(data);
+            });
+			
+            WebSocket.on('incoming_message'+vm.getCurrentUser()._id, (data) => {
+                handleIncomingMessageRoom(data);
             });
 			
 			
@@ -72,11 +78,12 @@
             //$log.debug("message: "+vm.message);
             var msg = {user: vm.getCurrentUser().username, message: vm.message};
             socket.emit('send:message', msg);
-            
+            $log.debug('invio messaggio alla room: '+ vm.room);
             let params = {
                 message:    vm.message,
                 created_at: new Date().toISOString(),
-                user_id:    Auth.getCurrentUser().id
+                user_id:    Auth.getCurrentUser()._id, 
+				room: vm.room
             };
 
             $http.post("/messages", params).then(
@@ -106,10 +113,18 @@
         };
         
          function handleIncomingMessage(data) {
+  		   $log.debug("handleIncomingMessage: "+ data.message);
            
             socket.emit('send:message', { message: data.message});
             vm.messages.push({ message: data.message, user: data.user, created_at: data.created_at, type: "message" });
         }
+		
+        function handleIncomingMessageRoom(data) {
+		   $log.debug("handleIncomingMessageRoom: "+ data.message);
+           socket.emit('send:message', { message: data.message});
+           vm.messages.push({ message: data.message, user: data.user, created_at: data.created_at, type: "message" });
+       }
+		
 
         function handleUserDisconnected(data) {
             loadPartecipants(); 
@@ -141,15 +156,19 @@
                 idUser1:    id,
                 idUser2:    Auth.getCurrentUser()._id
             };
-			$http.post("/chat/chatMessages", params).then(
+			
+			vm.room = id;
+			$log.debug("id della room click:"+ vm.room);
+			$http.post("/chat/chatRoom", params).then(
                 messages => {
                     vm.messages = messages;
+					$log.debug(vm.messages);
                 },
                 (reason) => {
                     console.log("error", reason);
                 }
             );
-            $log.debug(vm.messages);
+			
 		}
         
         
